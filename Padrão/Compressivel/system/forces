@@ -1,0 +1,55 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+#include    "$FOAM_CASE/0/initialConditions"
+
+     forces
+     {
+         type forces;
+         libs ("libforces.so"); //Lib to load
+         patches (walls); // change to your patch name
+         rhoInf $rhoInf; //Reference density for fluid
+         rho rhoInf;
+         CofR (0.25 0 0); //Origin for moment calculations
+         writeControl outputTime;
+     }
+     forceCoeffs
+     {
+         type forceCoeffs;
+         libs ("libforces.so");
+         patches (walls); //change to your patch name
+         rhoInf $rhoInf;
+         rho rhoInf; 
+	 pName       p;
+         UName       U;
+         log         true; 
+         CofR (0.25 0 0);
+         liftDir (-0.173648  $cos_alpha 0);
+         dragDir ($cos_alpha $sen_alpha  0);
+         pitchAxis (0 0 1);
+         magUInf $U_mag;
+         lRef 1.0;
+         Aref 0.01;
+         writeControl outputTime;
+     }
+
+
+
+fields (p); // 'p' é a pressão
+
+    yplus
+    {
+       type                yPlus;
+       functionObjectLibs  ("libutilityFunctionObjects.so");
+
+       enabled true;
+
+       writeControl outputTime;
+    }
+
+
+// ************************************************************************* //

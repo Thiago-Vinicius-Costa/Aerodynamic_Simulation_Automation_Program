@@ -1,0 +1,17 @@
+type surfaces;
+functionObjectLibs ("libsampling.so"); // Carregar a biblioteca necessária
+
+outputControl timeStep; // ou use outputTime
+outputInterval 1; // a cada passo de tempo
+
+surfaces
+(
+    chordSurface
+    {
+        type          sampledSurface;
+        surfaceType   patch;
+        patches       ("walls"); // Substitua 'wing' pelo nome da patch do perfil
+        interpolate   true;
+    }
+fields (p); // 'p' é a pressão
+);
